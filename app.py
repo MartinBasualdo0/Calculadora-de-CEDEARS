@@ -39,11 +39,12 @@ app.layout = html.Div([
             ),
             dcc.Store(
                 id='input-store',
-                storage_type='session'
+                storage_type='local',
+                data = default_ticker,
             ),
             dcc.Store(
                 id='store', 
-                storage_type='session',
+                storage_type='local',
                 # data = {'CEDEARS_SELECTOS': CEDEARS_SELECTOS, 'df': df}
                 data = {'CEDEARS_SELECTOS': CEDEARS_SELECTOS, 'df': df.to_dict()}
                 ),
@@ -81,11 +82,14 @@ def update_output(data):
 
 @app.callback(
     Output('input-store', 'data'),
-    Input('estimate-input', 'value')
+    Input('add-ticker-button', 'n_clicks'),
+    State('estimate-input', 'value'),
+    prevent_initial_call=True
 )
-def store_input(value):
-    value = value.upper()
-    return value
+def store_input(n_clicks, value):
+    if n_clicks > 0:
+        value = value.upper()
+        return value
 
 @app.callback(
     Output('store', 'data'),
@@ -111,6 +115,7 @@ def update_estimate(n_clicks, data, selected_ticker):
     try:
         estimate = calculate_price(selected_ticker, df)
     except Exception as e:
+        print(e)
         return "Cedear incorrecto, intente de nuevo"
     return estimate
 
@@ -135,4 +140,9 @@ def update_graph(data):
     return plot_ccl_por_cedear(df)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
+
+
+
+
+

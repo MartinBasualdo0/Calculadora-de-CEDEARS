@@ -1,3 +1,5 @@
 /.venv
 /test.ipynb
 /__pycache__
+/build
+/dist
