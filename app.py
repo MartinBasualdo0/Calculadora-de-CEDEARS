@@ -58,8 +58,8 @@ app.layout = html.Div([
                 children=[html.Div(id='estimate-result', className='lead')]
             ),
             dag.AgGrid(id='output-div'),
-            html.Button("Download Excel", id="btn_xlsx", className='btn btn-primary mb-3'),
-            dcc.Download(id="download-dataframe-xlsx"),
+            # html.Button("Download Excel", id="btn_xlsx", className='btn btn-primary mb-3'),
+            # dcc.Download(id="download-dataframe-xlsx"),
             dcc.Graph(
                 id = 'tc-por-cedear-plot',
                 figure=plot_ccl_por_cedear(df) #should read from the stored "df"
