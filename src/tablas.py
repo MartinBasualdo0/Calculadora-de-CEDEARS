@@ -29,12 +29,14 @@ def calculate_ratio(ratio_str):
 def get_main_table(CEDEARS: list[str]) -> pd.DataFrame:
     table_ratios = get_table_ratios()
     acciones_df = pd.DataFrame()
+    DICT_LOCALES_INTERNACIONALES = {v: k for k, v in DICT_INTERNACIONALES_LOCALES.items()}
     for ticker in CEDEARS:
-        if ticker in DICT_INTERNACIONALES_LOCALES.keys():
-            ticker_ars = DICT_INTERNACIONALES_LOCALES[ticker]
-            ticker_ars += ".BA"
-        else:
-            ticker_ars = ticker + ".BA"
+        ticker_ars = ticker + ".BA"
+        if ticker in DICT_LOCALES_INTERNACIONALES.keys():
+            ticker = DICT_LOCALES_INTERNACIONALES[ticker]
+        #     ticker_ars += ".BA"
+        # else:
+        #     ticker_ars = ticker + ".BA"
         try:
             tickers_data = {"tickers USA": ticker,
                             "tickers ARG": ticker_ars, #!
@@ -51,7 +53,8 @@ def get_main_table(CEDEARS: list[str]) -> pd.DataFrame:
     acciones_df["ccl promedio"] = acciones_df["ccl cedear"].median()
     acciones_df["ccl promedio"] = acciones_df["ccl promedio"].round(2)
     acciones_df["Tenés que comprar el cedear a $"] = ((acciones_df["cotizacion USA"] * acciones_df["ccl promedio"]) / acciones_df["Ratio  Cedear  /  valor  sub-yacente"]).round(2)
-    acciones_df = acciones_df.drop("tickers ARG", axis=1)
+    acciones_df = acciones_df.drop("tickers USA", axis=1)
+    acciones_df["tickers ARG"] = acciones_df["tickers ARG"].str.replace(".BA", "")
     return acciones_df
 
 def main_table(CEDEARS: list[str]):

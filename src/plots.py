@@ -11,7 +11,7 @@ def plot_ccl_por_cedear(df:pd.DataFrame):
     colorscale = [[0, 'green'], [1, 'red']]
 
     # Use the color scale to set the color of the markers
-    fig.add_trace(go.Scatter(x = temp["tickers USA"], y = temp["ccl cedear"], mode = "markers",
+    fig.add_trace(go.Scatter(x = temp["tickers ARG"], y = temp["ccl cedear"], mode = "markers",
                             marker = dict(size = 10, color = temp["ccl cedear"], colorscale = colorscale, cmin = min_ccl, cmax = max_ccl)))
 
     fig.update_yaxes(range = [min_ccl*.99, max_ccl*1.01], tickformat = ",")
