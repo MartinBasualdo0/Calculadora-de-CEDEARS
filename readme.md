@@ -1,5 +1,7 @@
 # CEDEAR Calculator
 
+![1706734793231](image/readme/1706734793231.png)
+
 Welcome to the CEDEAR Calculator! This Dash app allows users to calculate the implicit exchange rate between US-listed tickers and Argentina-listed tickers (known as CEDEARs), along with the recommended price to buy them in the local market. It's designed to help users avoid purchasing at any price, especially considering the relatively low volume of operations in the Argentinian market.
 
 ## Features
