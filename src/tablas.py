@@ -1,12 +1,13 @@
 import pandas as pd
 import yfinance as yf
 from io import StringIO
+from src.constants import COMAFI_URL, DICT_ORIGIN_CORREGIDOS, DICT_INTERNACIONALES_LOCALES
 
 
 from src.scrap_config import get_legacy_session
 
 def get_table_ratios():
-    response = get_legacy_session().get('https://www.comafi.com.ar/custodiaglobal/2483-Programas-Cedear.note.aspx')
+    response = get_legacy_session().get(COMAFI_URL)
     html_content = response.text
 
     # Use pandas to read the HTML table content
@@ -15,6 +16,8 @@ def get_table_ratios():
     # dfs is a list of dataframes, one for each table found in the HTML content.
     # Assuming you want the first table:
     table = dfs[0]
+    #Correcting some erroneus original tickers.
+    table['Ticker  en  mercado  de  origen'] = table["Ticker  en  mercado  de  origen"].apply(lambda x: DICT_ORIGIN_CORREGIDOS[x] if x in DICT_ORIGIN_CORREGIDOS.keys() else x)
     return table
 
 def calculate_ratio(ratio_str):
@@ -27,23 +30,23 @@ def get_main_table(CEDEARS: list[str]) -> pd.DataFrame:
     table_ratios = get_table_ratios()
     acciones_df = pd.DataFrame()
     for ticker in CEDEARS:
+        if ticker in DICT_INTERNACIONALES_LOCALES.keys():
+            ticker_ars = DICT_INTERNACIONALES_LOCALES[ticker]
+            ticker_ars += ".BA"
+        else:
+            ticker_ars = ticker + ".BA"
         try:
             tickers_data = {"tickers USA": ticker,
-                            "tickers ARG": ticker + ".BA",
+                            "tickers ARG": ticker_ars, #!
                             "cotizacion USA": yf.Ticker(ticker).info["currentPrice"],
-                            "cotizacion ARG": yf.Ticker(ticker + ".BA" ).info["currentPrice"],
+                            "cotizacion ARG": yf.Ticker(ticker_ars).info["currentPrice"],
             }
             acciones_df = pd.concat([acciones_df, pd.DataFrame(tickers_data, index=[0])], ignore_index=True)
         except Exception as e:
-            # print(f"An error occurred for ticker {ticker}: {e}")
             pass
-    # acciones_df["tickers USA"] = CEDEARS
-    # acciones_df["tickers ARG"] = acciones_df["tickers USA"] + ".BA"
     acciones_df = acciones_df.merge(table_ratios[['Ratio  Cedear  /  valor  sub-yacente', 'Ticker  en  mercado  de  origen']], how="left", left_on="tickers USA", right_on='Ticker  en  mercado  de  origen')
     acciones_df = acciones_df.drop('Ticker  en  mercado  de  origen', axis=1)
     acciones_df['Ratio  Cedear  /  valor  sub-yacente'] = acciones_df['Ratio  Cedear  /  valor  sub-yacente'].apply(calculate_ratio)
-    # acciones_df["cotizacion USA"] = acciones_df["tickers USA"].apply(lambda x: yf.Ticker(x).info['currentPrice'])
-    # acciones_df["cotizacion ARG"] = acciones_df["tickers ARG"].apply(lambda x: yf.Ticker(x).info['currentPrice'])
     acciones_df["ccl cedear"] = (acciones_df["cotizacion ARG"] / acciones_df["cotizacion USA"] * acciones_df["Ratio  Cedear  /  valor  sub-yacente"]).round(2)
     acciones_df["ccl promedio"] = acciones_df["ccl cedear"].median()
     acciones_df["ccl promedio"] = acciones_df["ccl promedio"].round(2)

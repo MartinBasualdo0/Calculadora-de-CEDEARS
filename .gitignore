@@ -3,3 +3,6 @@
 /__pycache__
 /build
 /dist
+/test
+/src/__pycache__
+*.pyc
