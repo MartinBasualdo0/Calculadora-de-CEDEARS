@@ -33,7 +33,7 @@ To run the CEDEAR Calculator locally, follow these steps:
 
 ## Contributors
 
-- **[Martín Basualdo]**: [Your GitHub Profile](https://github.com/your-profile)
+- **[Martín Basualdo]**: [GitHub Profile](https://github.com/MartinBasualdo0 "https://github.com/MartinBasualdo0")
 
 ## License
 
