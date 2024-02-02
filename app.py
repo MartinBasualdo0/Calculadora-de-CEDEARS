@@ -9,6 +9,7 @@ from src.tablas import main_table
 from src.estimated_price import calculate_price
 from src.constants import CEDEARS_COMPLETO, CEDEARS_SELECTOS
 from src.plots import plot_ccl_por_cedear
+from src.utils.browser import open_default_browser
 
 df = main_table(CEDEARS_SELECTOS)
 default_ticker = "AAPL"
@@ -45,7 +46,6 @@ app.layout = html.Div([
             dcc.Store(
                 id='store', 
                 storage_type='local',
-                # data = {'CEDEARS_SELECTOS': CEDEARS_SELECTOS, 'df': df}
                 data = {'CEDEARS_SELECTOS': CEDEARS_SELECTOS, 'df': df.to_dict()}
                 ),
             html.Button(
@@ -140,6 +140,7 @@ def update_graph(data):
     return plot_ccl_por_cedear(df)
 
 if __name__ == '__main__':
+    open_default_browser()
     app.run_server(debug=False)
 
 
