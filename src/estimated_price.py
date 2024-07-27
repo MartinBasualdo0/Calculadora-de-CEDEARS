@@ -1,11 +1,12 @@
-import locale
 import pandas as pd
 from src.tablas import get_main_table
 
-# locale.setlocale(locale.LC_ALL, 'es_AR.UTF-8')
-locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+def custom_currency_format(price: float) -> str:
+    # Formatear el número con separador de miles y decimales personalizados
+    formatted_price = f"{price:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return formatted_price
 
-def calculate_price(ticker:str, df:pd.DataFrame) -> str:
+def calculate_price(ticker: str, df: pd.DataFrame) -> str:
     ticker = ticker.upper()
     price = df.loc[df['tickers ARG'] == ticker, 'Tenés que comprar el cedear a $'].values[0]
-    return f"El precio estimado debería ser: {locale.currency(price, grouping=True)}"
+    return f"El precio estimado debería ser: {custom_currency_format(price)}"
