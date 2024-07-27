@@ -140,14 +140,11 @@ def update_graph(data):
     return plot_ccl_por_cedear(df)
 
 
-# intento para gunicorn
-if __name__ != '__main__':
-    server = app.server
-    
 if __name__ == '__main__':
     # open_default_browser() #unicamente para exe
     # app.run_server(debug=False)
-    server = app.server
+    app.run_server(debug=False, host='0.0.0.0', port=10000)
+
 
 
 
