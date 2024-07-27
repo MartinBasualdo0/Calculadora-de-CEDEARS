@@ -146,7 +146,8 @@ if __name__ != '__main__':
     
 if __name__ == '__main__':
     # open_default_browser() #unicamente para exe
-    app.run_server(debug=False)
+    # app.run_server(debug=False)
+    server = app.server
 
 
 
