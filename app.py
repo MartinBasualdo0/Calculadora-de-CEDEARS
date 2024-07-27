@@ -139,6 +139,11 @@ def update_graph(data):
     df = pd.DataFrame.from_dict(data['df'])
     return plot_ccl_por_cedear(df)
 
+
+# intento para gunicorn
+if __name__ != '__main__':
+    server = app.server
+    
 if __name__ == '__main__':
     # open_default_browser() #unicamente para exe
     app.run_server(debug=False)
