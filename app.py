@@ -140,7 +140,7 @@ def update_graph(data):
     return plot_ccl_por_cedear(df)
 
 if __name__ == '__main__':
-    open_default_browser()
+    # open_default_browser() #unicamente para exe
     app.run_server(debug=False)
 
 
