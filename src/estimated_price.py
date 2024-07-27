@@ -2,7 +2,8 @@ import locale
 import pandas as pd
 from src.tablas import get_main_table
 
-locale.setlocale(locale.LC_ALL, 'es_AR.UTF-8')
+# locale.setlocale(locale.LC_ALL, 'es_AR.UTF-8')
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def calculate_price(ticker:str, df:pd.DataFrame) -> str:
     ticker = ticker.upper()
