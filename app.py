@@ -141,12 +141,8 @@ def update_graph(data):
 
 
 if __name__ == '__main__':
-    # open_default_browser() #unicamente para exe
+    open_default_browser() #unicamente para exe
     # app.run_server(debug=False)
-    app.run_server(debug=False, host='0.0.0.0', port=10000)
-
-
-
-
+    app.run_server(debug=False, host='0.0.0.0', port=8050)
 
 
