@@ -37,15 +37,16 @@ def get_main_table(CEDEARS: list[str]) -> pd.DataFrame:
         #     ticker_ars += ".BA"
         # else:
         #     ticker_ars = ticker + ".BA"
-        try:
-            tickers_data = {"tickers USA": ticker,
-                            "tickers ARG": ticker_ars, #!
-                            "cotizacion USA": yf.Ticker(ticker).info["currentPrice"],
-                            "cotizacion ARG": yf.Ticker(ticker_ars).info["currentPrice"],
-            }
-            acciones_df = pd.concat([acciones_df, pd.DataFrame(tickers_data, index=[0])], ignore_index=True)
-        except Exception as e:
-            pass
+        # try:
+        tickers_data = {"tickers USA": ticker,
+                        "tickers ARG": ticker_ars, #!
+                        "cotizacion USA": yf.Ticker(ticker).info["currentPrice"],
+                        "cotizacion ARG": yf.Ticker(ticker_ars).info["currentPrice"],
+        }
+        acciones_df = pd.concat([acciones_df, pd.DataFrame(tickers_data, index=[0])], ignore_index=True)
+        # except Exception as e:
+            # pass
+        # print(acciones_df)
     acciones_df = acciones_df.merge(table_ratios[['Ratio  Cedear  /  valor  sub-yacente', 'Ticker  en  mercado  de  origen']], how="left", left_on="tickers USA", right_on='Ticker  en  mercado  de  origen')
     acciones_df = acciones_df.drop('Ticker  en  mercado  de  origen', axis=1)
     acciones_df['Ratio  Cedear  /  valor  sub-yacente'] = acciones_df['Ratio  Cedear  /  valor  sub-yacente'].apply(calculate_ratio)
